@@ -19,6 +19,10 @@ class Calculator {
       this.clear();
     }
 
+    delete() {
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
+    }
+
 
     calculate() {
         let result;
@@ -51,6 +55,8 @@ class Calculator {
 
     // função para colocar a operação no display de cima depois de clicar no operador
     chooseOperation(operation) {
+
+        if(this.currentOperand == '') return;
         if (this.previousOperand != '') {
             this.calculate()
         }
@@ -106,3 +112,13 @@ allClearButton.addEventListener('click', () => {
     calculator.clear();
     calculator.updtadeDisplay();
 });
+
+equalsButton.addEventListener('click', () => {
+    calculator.calculate();
+    calculator.updtadeDisplay();
+})
+
+deleteButton.addEventListener('click', () => {
+    calculator.delete()
+    calculator.updtadeDisplay();
+})
