@@ -9,6 +9,8 @@ const previousOperandTextElement = document.querySelector(
 const currentOperandTextElement = document.querySelector(
   "[data-current-operand]"
 );
+
+
    
 class Calculator {
     constructor(previousOperandTextElement, currentOperandTextElement) {
@@ -17,10 +19,45 @@ class Calculator {
       this.clear();
     }
 
+
+    calculate() {
+        let result;
+
+        const previousOperandFloat = parseFloat(this.previousOperand);
+        const currentOperandFloat = parseFloat(this.currentOperand);
+
+        if (isNaN(previousOperandFloat) || isNaN(currentOperandFloat)) return;
+
+        switch (this.operation) {
+            case "+":
+                result = previousOperandFloat + currentOperandFloat;
+                break;
+            case "-": 
+                result = previousOperandFloat - currentOperandFloat;
+                break;
+            case "÷":
+                result = previousOperandFloat / currentOperandFloat;
+                break;
+            case "*":
+                result = previousOperandFloat * currentOperandFloat;
+            default:
+                return;
+        }
+
+        this.currentOperand = result;
+        this.operation = undefined;
+        this.previousOperand = "";
+    }
+
+    // função para colocar a operação no display de cima depois de clicar no operador
     chooseOperation(operation) {
+        if (this.previousOperand != '') {
+            this.calculate()
+        }
+
         this.operation = operation;
 
-        this.previousOperand = `${this.currentOperand} ${this.operation}`
+        this.previousOperand = this.currentOperand
         this.currentOperand = "";
     }
 
@@ -40,7 +77,7 @@ class Calculator {
 
     // atualiza os dados digitados na tela
     updtadeDisplay() {
-        this.previousOperandTextElement.innerText = this.previousOperand;
+        this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation || ""}`;
         this.currentOperandTextElement.innerText = this.currentOperand;
     }
 
